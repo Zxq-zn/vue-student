@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue基本指令</title>
+    <script type="text/javascript" src="https://unpkg.com/vue"></script>
+    <style>
+        .tag {
+            background-color: aqua;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h3>注意事项：</h3>
+        <div>1、v-bind:只能实现model层到view层的单向绑定 </div>
+        <div>2、v-model:可以实现model层和view层的双向绑定,但只能用于表单元素</div>
+        <div>3、v-on：绑定的事件名可是设置它的默认事件属性，比如.prevent,.once等 </div>
+        <div>4、v-for：实现循环时要绑定key，并且数组改变要用slice，pop等方法，普通list[3] = 233不会被监听</div>
+    </div>
+
+
+    <div id="app">
+        <p v-cloak>{{title}}</p>
+        <span class="tag">v-cloak：防止title没有渲染而闪烁</span>
+        <p v-text="title">3456</p>
+        <span class="tag">v-text:完全替换，v-html:会解析html标签</span>
+        <p v-if="flag">v-if控制的标签</p>
+        <span class="tag">v-if：完全不渲染dom节点</span>
+        <p v-show="!flag">v-show控制的标签</p>
+        <span class="tag">v-show:挂载dom节点，不过display:none,频繁切换用</span>
+        <p v-bind:title="title">v-bind控制的标签</p>
+        <span class="tag">v-bind:绑定，将""里面解析为js表达式，简写：：</span>
+        <p v-on:click="click">v-on控制的标签</p> v-on:事件名="方法名",简写：@click="click"
+        <span class="tag"></span>
+        <input type="text" v-model="list[2]" style="display:block;">
+        <span class="tag">v-model:实现model和view的双向绑定</span>
+        <ul>
+            <li v-for="(item,index) in list" :key="index">{{item}}</li>
+        </ul>
+        <span class="tag">v-for:实现循环的指令</span>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                title: '123',
+                flag: true,
+                list: [1, 2, 3, 4, 5, 6]
+            },
+            methods: {
+                click() {
+                    console.log('click事件被触发!');
+                    this.title = '777';
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
