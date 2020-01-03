@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue的路由使用</title>
+    <script type="text/javascript" src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div style="margin:20px;">
+        <h3>注意事项: 这个记录为最基础的使用</h3>
+        <div>1、router-link 和router-view 配套使用，可以用router.push等实现routerlink的路由跳转功能</div>
+        <div>2、router模式分为 history 和 hash 模式</div>
+        <div>3、router可以通过 query 和 params 等方法传递参数</div>
+        <div>4、router有许多路由守卫，如beforeEach(to,from,next)等不同的路由守卫</div>
+        <div>5、注意还有嵌套路由，路由重定向，按需引用等使用技巧</div>
+    </div>
+
+    <div id="app" style="margin:20px;">
+        <router-link to="/">首页</router-link>
+        <router-link to="/about">相关</router-link>
+
+        <router-view></router-view>
+    </div>
+    <script>
+        const Home = {
+            template: `<h3>This is Home Page</h3>`
+        }
+        const About = {
+            template: `<p>This is About Page</p>`
+        }
+        const routes = [{
+            path: '/',
+            component: Home
+        }, {
+            path: '/about',
+            component: About
+        }]
+        const router = new VueRouter({
+            routes
+        });
+        var vm = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            components: {
+                Home,
+                About
+            },
+            router
+        })
+    </script>
+</body>
+
+</html>
