@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue-axios的基本使用</title>
+    <script type="text/javascript" src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.bootcss.com/Mock.js/1.0.0/mock-min.js"></script>
+</head>
+
+<body>
+    <div style="margin:20px;">
+        <h3>注意事项: 这个记录为最基础的使用</h3>
+        <div>1、axios主要应用promise的原理实现异步ajax的请求与响应</div>
+        <div>2、ajax主要用get或post两种请求，区别在于浏览器url地址显示和携带数据量的大小</div>
+        <div>3、promise的.then返回新的promise对象，.catch为.then(null,function)的变种</div>
+        <div>4、promise不论执行的是then还是catch，finally中都会执行</div>
+    </div>
+    <div id="app" style="margin:20px;">
+        <button @click="getData">点击 post</button>
+        <button @click="getData2">点击 get</button>
+    </div>
+    <script>
+        let data1 = [];
+        let data2 = [];
+        for (let i = 0; i < 10; i++) {
+            let template1 = {
+                'name': Mock.Random.first()
+            }
+            data1.push(template1);
+            let template2 = {
+                'age': Mock.Random.natural(1, 33)
+            }
+            data2.push(template2);
+        }
+        Mock.mock('/data1', 'post', function(option) {
+            console.log(option);
+            return data1;
+        });
+        Mock.mock('/data2', 'get', data2);
+    </script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {},
+            methods: {
+                getData() {
+                    // 第一种方式
+                    // axios.post('/data1', {
+                    //         name: 'zzz'
+                    //     })
+                    //     .then((response) => {
+                    //         console.log(response);
+                    //     })
+                    //     .catch((error) => {
+                    //         console.log(error);
+                    //     })
+                    //第二种方式
+                    axios({
+                            method: 'post',
+                            url: '/data1',
+                            data: {
+                                firstname: 'zzz'
+                            }
+                        })
+                        .then((response) => {
+                            console.log(response);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                        .finally(function() {
+                            console.log('finally执行了');
+                        })
+                },
+                getData2() {
+                    axios.get('/data2')
+                        .then((response) => {
+                            console.log(response);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
