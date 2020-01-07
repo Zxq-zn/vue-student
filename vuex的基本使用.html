@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vuex的基本使用</title>
+    <script type="text/javascript" src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
+</head>
+
+<body>
+    <div>
+        <h3>注意事项: 这个记录为最基础的使用</h3>
+        <div>1、主要有四部分，state存基本数据，getter获取数据，mutations同步更改数据，actions触发mutstions中的数据</div>
+        <div>2、actions中操作是同步的，当需要异步操作的时候，可以用actions中异步操作去触发它</div>
+        <div>3、state中的数据不能像基本变量去改变他的值，必须经过mutations中事件去触发改变</div>
+    </div>
+    <div id="app">
+        <p>count = {{count}}</p>
+        <button @click="print">点击</button>
+        <button @click="add">+</button>
+        <button @click="reduce">-</button>
+    </div>
+    <script>
+        const store = new Vuex.Store({
+            state: {
+                count: 0
+            },
+            getters: {
+                getCount(state) {
+                    return state.count
+                }
+            },
+            mutations: { //事件注册，不能直接调用，用store.commit('addCount')调用，这里是同步更改数据
+                addCount(state) {
+                    state.count++
+                },
+                reduceCount(state) {
+                    state.count--
+                }
+            },
+            actions: { //通过store.dispatch('addCountAsync')触发，可用于异步操作
+                addCountAsync(context) { //context指当前state
+                    setTimeout(() => {
+                        context.commit('addCount')
+                    }, 1000)
+                }
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {},
+            computed: {
+                count() {
+                    return store.state.count
+                }
+            },
+            store,
+            methods: {
+                print() {
+                    console.log(store.state.count)
+                    console.log(store.getters.getCount)
+                },
+                add() {
+                    store.dispatch('addCountAsync')
+                },
+                reduce() {
+                    store.commit('reduceCount')
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
